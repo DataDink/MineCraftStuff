@@ -1,0 +1,394 @@
+<html>
+	<head>
+		<title>Thaumium Connector</title>
+		<link href='http://fonts.googleapis.com/css?family=Schoolbell' rel='stylesheet' type='text/css'>
+		<style>
+			* { 
+				box-sizing: border-box; 
+				font-family: 'Schoolbell', cursive;
+				font-size: 32px;
+				font-weight: bold;
+				color: #201000;
+				text-shadow: 0px 0px 3px #201000;
+			}
+			html {
+				padding: 0px; margin: 0px;
+				position: relative;
+				background: url('http://subtlepatterns.com/patterns/pool_table.png') repeat 50% 50% transparent;
+			}
+			
+			body { 
+				position: absolute;
+				left: 0px; right: 0px;
+				width: 700px;
+				padding: 50px 35px; margin: 150px auto;
+				background: url('http://us.123rf.com/400wm/400/400/kentoh/kentoh1003/kentoh100300016/6503558-seamless-rough-cloth-pattern-in-brown-and-old.jpg') repeat 50% 50% transparent;
+				box-shadow: 0px 0px 25px -5px black;
+			}
+			
+			body > header, body > footer {
+				background: url('http://homeinteriorsdesigns.info/wp-content/uploads/dark-wood-background-pattern.jpg') repeat-x 50% 50% transparent;
+				position: fixed;
+				left: 0px; right: 0px;
+				height: 100px; width: auto;
+				padding: 50px 100px; margin: 0px;
+				z-index: 10;
+			}
+			body > header { top: 0px; border-bottom: 2px solid #000000; box-shadow: 0px 20px 20px -20px #201000; }
+			body > footer { bottom: 0px; border-top: 2px solid #000000; box-shadow: 0px -20px 20px -20px #201000; }
+			
+			h1, h2, h3, h4, h5, h6 { 
+				text-decoration: underline; 
+				text-align: center; 
+				margin: 0px 0px 10px; 
+				padding: 0px; 
+			}
+			
+			.layout { display: table; }
+			.layout > .columns { display: table-row; }
+			.layout > .columns > * { display: table-cell; }
+			
+			label { 
+				display: block; 
+				width: 350px;
+				position: relative;
+				margin: 0px 0px 25px;
+			}
+			
+			select, select:focus {
+				background: none;
+				border: none;
+				outline: none;
+				cursor: pointer;
+			}
+			
+			label > select {
+				position: absolute;
+				width: 215px;
+				left: 110px;
+			}
+			
+			button, button:hover, button:active, button:focus {
+				border: none;
+				background: #E8E0D8;
+				outline: none;
+				padding: 10px 50px;
+				margin: 25px 0px 0px 100px;
+				opacity: .8;
+				cursor: pointer;
+				-webkit-transform: rotateZ(-22deg);
+				-khtml-transform: rotateZ(-22deg);
+				-moz-transform: rotateZ(-22deg);
+				-ms-transform: rotateZ(-22deg);
+				-o-transform: rotateZ(-22deg);
+				transform: rotateZ(-22deg);
+				position: relative;
+				box-shadow: 0px 3px 5px 0px #201000;
+			}
+			
+			button:active { 
+				box-shadow: none; 
+				-webkit-transform: translateY(3px) rotateZ(-22deg);
+			}
+			
+			.result-item {
+				width: 300px;
+				border-bottom: 3px solid #201000;
+				white-space: nowrap;
+			}
+			.result-item > label {
+				display: inline-block;
+				width: 50px;
+				padding: 5px;
+				margin: 0px;
+			}
+			.result-item:after {
+				content: '';
+				display: inline-block;
+				vertical-align: middle;
+				background: url('http://ftbwiki.org/images/e/ec/T4aspects.png') no-repeat transparent;
+				border-radius: 100%;
+				width: 62px; height: 62px;
+				margin: 0px 0px 0px 15px;
+			}
+			.result-item.Aer:after { background-position: -0px -0px; }
+			.result-item.Aqua:after { background-position: -128px -0px; }
+			.result-item.Ignis:after { background-position: -448px -65px; }
+			.result-item.Ordo:after { background-position: -192px -192px; }
+			.result-item.Perditio:after { background-position: -319px -192px; }
+			.result-item.Terra:after { background-position: -127px -320px; }
+			.result-item.Gelum:after { background-position: -192px -63px; }
+			.result-item.Lux:after { background-position: -255px -127px; }
+			.result-item.Motus:after { background-position: -128px -192px; }
+			.result-item.Potentia:after { background-position: -0px -256px; }
+			.result-item.Saxum:after { background-position: -192px -256px; }
+			.result-item.Vacuos:after { background-position: -256px -320px; }
+			.result-item.Victus:after { background-position: -382px -320px; }
+			.result-item.Bestia:after { background-position: -320px -0px; }
+			.result-item.Fames:after { background-position: -128px -64px; }
+			.result-item.Granum:after { background-position: -256px -64px; }
+			.result-item.Iter:after { background-position: -62px -128px; }
+			.result-item.Limus:after { background-position: -128px -128px; }
+			.result-item.Metallum:after { background-position: -448px -128px; }
+			.result-item.Mortuus:after { background-position: -64px -192px; }
+			.result-item.Permutatio:after { background-position: -448px -192px; }
+			.result-item.Praecantatio:after { background-position: -64px -256px; }
+			.result-item.Sano:after { background-position: -128px -256px; }
+			.result-item.Tempestas:after { background-position: -448px -256px; }
+			.result-item.Tenebrae:after { background-position: -64px -320px; }
+			.result-item.Vinculum:after { background-position: -448px -320px; }
+			.result-item.Vitreus:after { background-position: -64px -384px; }
+			.result-item.Volatus:after { background-position: -128px -384px; }
+			.result-item.Tempus:after { background-position: -0px -320px; }
+			.result-item.Alienis:after { background-position: -64px -0px; }
+			.result-item.Auram:after { background-position: -256px -0px; }
+			.result-item.Corpus:after { background-position: -448px -0px; }
+			.result-item.Exanimis:after { background-position: -0px -64px; }
+			.result-item.Herba:after { background-position: -320px -64px; }
+			.result-item.Spiritus:after { background-position: -320px -256px; }
+			.result-item.Venenum:after { background-position: -320px -320px; }
+			.result-item.Vitium:after { background-position: -0px -384px; }
+			.result-item.Arbor:after { background-position: -192px -0px; }
+			.result-item.Cognitio:after { background-position: -384px -0px; }
+			.result-item.Sensus:after { background-position: -256px -256px; }
+			.result-item.Humanus:after { background-position: -384px -64px; }
+			.result-item.Instrumentum:after { background-position: -0px -128px; }
+			.result-item.Lucrum:after { background-position: -192px -128px; }
+			.result-item.Messis:after { background-position: -384px -128px; }
+			.result-item.Perfodio:after { background-position: -384px -192px; }
+			.result-item.Fabrico:after { background-position: -64px -64px; }
+			.result-item.Machina:after { background-position: -320px -128px; }
+			.result-item.Meto:after { background-position: -0px -192px; }
+			.result-item.Pannus:after { background-position: -256px -192px; }
+			.result-item.Telum:after { background-position: -384px -256px; }
+			.result-item.Tutamen:after { background-position: -192px -320px; }
+			
+		</style>
+	</head>
+	<body>
+		<h3>Thaumium Connector</h3>
+		<div class="layout">
+			<div class="columns">
+				<aside>
+					<form data-role="inputs">
+						<label>
+							Start:
+							<select data-role="start"></select>
+						</label>
+						<label>
+							End:
+							<select data-role="end"></select>
+						</label>
+						<label>
+							Version:
+							<select data-role="version"></select>
+						</label>
+						<button type="submit">Search</button>
+					</form>
+				</aside>
+				<section>
+					<div class="parchment" data-role="results"></div>
+				</section>
+			</div>
+		</div>
+		<header></header>
+		<footer></footer>
+	</body>
+	<script type="text/javascript">
+		Array.prototype.contains = function(value) {
+			for (var i = 0; i < this.length; i++) {
+				if (this[i] === value) { return true; }
+			}
+			return false;
+		};
+	
+		(function() {
+			var versions = [];
+			versions.push({
+				version: '4.0', aspects: {
+					'Aer': [],
+					'Aqua': [],
+					'Ignis': [],
+					'Ordo': [],
+					'Perditio': [],
+					'Terra': [],
+					'Gelum': ['Aqua', 'Ordo'],
+					'Lux': ['Aer', 'Ignis'],
+					'Motus': ['Aer', 'Ordo'], 
+					'Potentia': ['Ordo', 'Ignis'],
+					'Saxum': ['Terra', 'Terra'],
+					'Vacuos': ['Aer', 'Perditio'],
+					'Victus': ['Aqua', 'Terra'],
+					'Bestia': ['Motus', 'Victus'],
+					'Fames': ['Victus', 'Vacuos'],
+					'Granum': ['Victus', 'Terra'],
+					'Iter': ['Motus', 'Terra'],
+					'Limus': ['Victus', 'Aqua'],
+					'Metallum': ['Saxum', 'Ordo'],
+					'Mortuus': ['Victus', 'Perditio'],
+					'Permutatio': ['Motus', 'Aqua'],
+					'Praecantatio': ['Vacuos', 'Potentia'],
+					'Sano': ['Victus', 'Victus'],
+					'Tempestas': ['Aer', 'Aqua'],
+					'Tenebrae': ['Vacuos', 'Lux'],
+					'Vinculum': ['Motus', 'Perditio'],
+					'Vitreus': ['Saxum', 'Aqua'],
+					'Volatus': ['Aer', 'Motus'],
+					'Tempus': ['Vacuos', 'Ordo'],
+					'Alienis': ['Vacuos', 'Tenebrae'],
+					'Auram': ['Praecantatio', 'Aer'],
+					'Corpus': ['Mortuus', 'Bestia'],
+					'Exanimis': ['Motus', 'Mortuus'],
+					'Herba': ['Granum', 'Terra'],
+					'Spiritus': ['Victus', 'Mortuus'],
+					'Venenum': ['Aqua', 'Mortuus'],
+					'Vitium': ['Praecantatio', 'Perditio'],
+					'Arbor': ['Terra', 'Herba'],
+					'Cognitio': ['Terra', 'Spiritus'],
+					'Sensus': ['Aer', 'Spiritus'],
+					'Humanus': ['Bestia', 'Cognitio'],
+					'Instrumentum': ['Humanus', 'Metallum'],
+					'Lucrum': ['Humanus', 'Fames'],
+					'Messis': ['Granum', 'Humanus'],
+					'Perfodio': ['Humanus', 'Saxum'],
+					'Fabrico': ['Humanus', 'Instrumentum'],
+					'Machina': ['Motus', 'Instrumentum'],
+					'Meto': ['Messis', 'Humanus'],
+					'Pannus': ['Instrumentum', 'Bestia'],
+					'Telum': ['Instrumentum', 'Perditio'],
+					'Tutamen': ['Instrumentum', 'Terra']
+				}
+			});
+			versions.push({
+				version: '4.1.0f', aspects: {
+					'Tempestas': ['Aer', 'Motus']
+				}
+			});
+			versions.push({
+				version: '4.1.0g', aspects: {
+					'Motus': ['Aer', 'Aqua'],
+					'Granum': ['Victus', 'Ordo'],
+					'Permutatio': ['Peritio', 'Ordo'],
+					'Tempestas': ['Aer', 'Gelum'],
+					'Arbor': ['Aer', 'Herba'],
+					'Instrumentum': ['Humanus', 'Ordo'],
+					'Messis': ['Herba', 'Humanus'],
+					'Meto': ['Messis', 'Instrumentum']
+				}
+			});
+			versions.push({
+				version: '4.1.1.10', aspects: {
+					'Saxum': []
+				}
+			});
+			versions.push({
+				version: '4.1.1.13', aspects: {
+					'Gelum': ['Ignis', 'Perditio']				
+				}
+			});
+			versions.push({
+				version: '4.1.1.14', aspects: {
+					'Granum': [],
+					'Vitreus': ['Terra', 'Ordo'],
+					'Herba': ['Victus', 'Terra'],
+					'Perfodio': ['Humanus', 'Terra']
+				}
+			});
+			
+			var Builder = function() {
+				var self = this;
+				self.aspects = [];
+				for (var name in versions[0].aspects) { self.aspects.push(name); }
+				self.aspects.sort();
+				
+				function getBuild(version) {
+					var build = {};
+					for (var i = 0; i < versions.length; i++) {
+						for (var a = 0; a < self.aspects.length; a++) {
+							var name = self.aspects[a];
+							build[name] = versions[i].aspects[name] || build[name];
+						}
+						if (versions[i].version === version) { break; }
+					}
+					return build;
+				}
+				
+				function formPath(node) {
+					var items = [];
+					while (node) { items.push(node.name); node = node.parent; }
+					items.reverse();
+					return items;
+				}
+				
+				self.buildPath = function(version, from, to) {
+					var build = getBuild(version);
+					var history = [];
+					var layer = [{name: from}];
+					
+					while (layer.length) {
+						var nextLayer = [];
+						for (var l = 0; l < layer.length; l++) {
+							var node = layer[l];
+							if (node.name === to) { return formPath(node); }
+							if (history.contains(node.name)) { continue; }
+							history.push(node.name);
+							var children = (build[node.name] || []).slice();
+							for (var branch in build) {
+								if (build[branch].contains(node.name)) { children.push(branch); }
+							}
+							for (var c = 0; c < children.length; c++) {
+								nextLayer.push({name: children[c], parent: node});
+							}
+						}
+						layer = nextLayer;
+					}
+					return false;
+				}
+			};
+			
+			var builder = new Builder();
+			var inputs = document.querySelector('[data-role=inputs]');
+			var results = document.querySelector('[data-role=results]');
+			var start = document.querySelector('[data-role=start]');
+			var end = document.querySelector('[data-role=end]');
+			var version = document.querySelector('[data-role=version]');
+			
+			var aspectMarkup = '';
+			for (var n = 0; n < builder.aspects.length; n++) { aspectMarkup = aspectMarkup + '<option>' + builder.aspects[n] + '</option>'; }
+			start.innerHTML = aspectMarkup;
+			end.innerHTML = aspectMarkup;
+			
+			var versionMarkup = '';
+			for (var i = 0; i < versions.length; i++) { versionMarkup = versionMarkup + '<option>' + versions[i].version + '</option>'; }
+			version.innerHTML = versionMarkup;
+			
+			var procid = 0;
+			inputs.addEventListener('submit', function(e) {
+				e.preventDefault();
+				var from = start.options[start.selectedIndex].text;
+				var to = end.options[end.selectedIndex].text;
+				var ver = version.options[version.selectedIndex].text;
+				results.innerHTML = '<em>Researching Aspects...</em>';
+				
+				clearTimeout(procid);
+				setTimeout(function() {
+					var path = builder.buildPath(ver, from, to);
+					if (!path) {
+						results.innerHTML = '<em>No connection could be made!</em>';
+					} else {
+						var resultsMarkup = '';
+						for (var i = 0; i < path.length; i++) {
+							var aspect = path[i];
+							resultsMarkup = resultsMarkup + '<div class="result-item ' + aspect + '">';
+							resultsMarkup = resultsMarkup + '<label>' + i + '</label>';
+							resultsMarkup = resultsMarkup + '<span>' + aspect + '</span>';
+							resultsMarkup = resultsMarkup + '</div>';
+						}
+						results.innerHTML = resultsMarkup;
+					}
+				}, 10);
+			});
+		})();
+	</script>
+</html>
+	
