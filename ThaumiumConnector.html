@@ -371,7 +371,7 @@
 				results.innerHTML = '<em>Researching Aspects...</em>';
 				
 				clearTimeout(procid);
-				setTimeout(function() {
+				procid = setTimeout(function() {
 					var path = builder.buildPath(ver, from, to);
 					if (!path) {
 						results.innerHTML = '<em>No connection could be made!</em>';
