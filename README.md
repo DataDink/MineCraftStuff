@@ -3,4 +3,4 @@ MineCraftStuff
 
 A place for random MineCraft stuff
 
-* Thaumcraft Connector: http://DataDink.github.io/MineCraftStuff/ThaumcraftConnector.html
+* Thaumcraft Connector: http://datadink.github.io/MineCraftStuff/ThaumiumConnector.html
