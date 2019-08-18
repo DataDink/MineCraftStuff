@@ -1,0 +1,205 @@
+<html>
+  <head>
+    <style>
+      * { box-sizing: border-box; }
+      html, body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        margin: auto; padding: 0;
+        width: 100vmin; height: 100vmin;
+        border: none; overflow: hidden;
+        left: 0; right: 0;
+        top: 0; bottom: 0;
+        background: url('data:image/svg+xml;utf8,%3Csvg%20viewBox%3D%220%200%2016%2016%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cstyle%3E%0A%2A%20%7B%20border%3A%20none%3B%20stroke%3A%20none%3B%20strokeWidth%3A%200%3B%20%7D%0Arect%20%7B%20width%3A%205px%3B%20height%3A%205px%3B%20%7D%0A%3C%2Fstyle%3E%0A%3Crect%20x%3D%220%22%20y%3D%220%22%20fill%3D%22%23004000%22%2F%3E%0A%3Crect%20x%3D%224%22%20y%3D%220%22%20fill%3D%22%23003B00%22%2F%3E%0A%3Crect%20x%3D%228%22%20y%3D%220%22%20fill%3D%22%23003400%22%2F%3E%0A%3Crect%20x%3D%2212%22%20y%3D%220%22%20fill%3D%22%23003000%22%2F%3E%0A%3Crect%20x%3D%220%22%20y%3D%224%22%20fill%3D%22%23003400%22%2F%3E%0A%3Crect%20x%3D%224%22%20y%3D%224%22%20fill%3D%22%23003B00%22%2F%3E%0A%3Crect%20x%3D%228%22%20y%3D%224%22%20fill%3D%22%23004000%22%2F%3E%0A%3Crect%20x%3D%2212%22%20y%3D%224%22%20fill%3D%22%23003000%22%2F%3E%0A%3Crect%20x%3D%220%22%20y%3D%228%22%20fill%3D%22%23003000%22%2F%3E%0A%3Crect%20x%3D%224%22%20y%3D%228%22%20fill%3D%22%23003400%22%2F%3E%0A%3Crect%20x%3D%228%22%20y%3D%228%22%20fill%3D%22%23004000%22%2F%3E%0A%3Crect%20x%3D%2212%22%20y%3D%228%22%20fill%3D%22%23003B00%22%2F%3E%0A%3Crect%20x%3D%220%22%20y%3D%2212%22%20fill%3D%22%23003B00%22%2F%3E%0A%3Crect%20x%3D%224%22%20y%3D%2212%22%20fill%3D%22%23003000%22%2F%3E%0A%3Crect%20x%3D%228%22%20y%3D%2212%22%20fill%3D%22%23004000%22%2F%3E%0A%3Crect%20x%3D%2212%22%20y%3D%2212%22%20fill%3D%22%23003400%22%2F%3E%0A%3C%2Fsvg%3E'), #003800;
+        background-size: 10vmin;
+      }
+      main {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        width: 95%; height: 95%;
+        background: #191919;
+        padding: 2.5%;
+        border: 5vmin groove #DEDE6C;
+        color: #F0F0F0;
+        font-family: 'Arial';
+      }
+      main::after {
+        content: 'DRAG/DROP IMAGE';
+        display: block;
+        position: absolute;
+        left: 0; right: 0;
+        top: 0; bottom: 0;
+        height: 5vmin; width: 100%;
+        padding: 0; margin: auto;
+        line-height: 5vmin;
+        font-size: 5vmin;
+        color: rgba(255, 255, 255, .25);
+        text-align: center;
+        pointer-events: none;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      #render, #data {
+        display: block;
+        position: relative;
+        height: 45%;
+        color: #D0D0D0;
+      }
+      #render {
+        display: flex;
+        justify-content: center;
+      }
+      #render > canvas {
+        display: block;
+        height: 100%; width: auto;
+      }
+      #data {
+        white-space: pre;
+        font-family: 'Lucida Console', Monaco, monospace;
+        overflow: auto;
+        text-align: center;
+      }
+      loader {
+        display: flex;
+        position: fixed;
+        left: 0; right: 0;
+        top: 0; bottom: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,.75);
+        align-items: center;
+        justify-content: center;
+      }
+      loader::after {
+        content: 'Processing...';
+        color: white;
+        font-family: 'Arial';
+        font-size: 2.5vmin;
+        text-align: center;
+        height: 2.5vmin;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section id="render">
+
+      </section>
+      <section id="data">
+
+      </section>
+      <form onsubmit="event.preventDefault()">
+        <label>Converted Width: <input name="width" type="number" value="64" /></label>
+        <label>Converted Height: <input name="height" type="number" value="64" /></label>
+      </form>
+    </main>
+    <loader style="display: none"></loader>
+    <script>
+      var data = {
+        render: null,
+        text: null,
+      }
+
+      var view = {
+        render: document.getElementById('render'),
+        text: document.getElementById('data'),
+        form: document.querySelector('form'),
+        width: document.querySelector('[name=width]'),
+        height: document.querySelector('[name=height]'),
+        loader: document.querySelector('loader')
+      }
+
+
+      const red = 0, green = 1, blue = 2, alpha = 3;
+      var colors = [ // Human readable values for easier code readability + maint
+        ['white',     '#F0F0F0'],
+        ['orange',    '#F2B233'],
+        ['magenta',   '#E57FD8'],
+        ['lightBlue', '#99B2F2'],
+        ['yellow',    '#DEDE6C'],
+        ['lime',      '#7FCC19'],
+        ['pink',      '#F2B2CC'],
+        ['gray',      '#4C4C4C'],
+        ['lightGray', '#999999'],
+        ['cyan',      '#4C99B2'],
+        ['purple',    '#B266E5'],
+        ['blue',      '#3366CC'],
+        ['brown',     '#7F664C'],
+        ['green',     '#57A64E'],
+        ['red',       '#CC4C4C'],
+        ['black',     '#191919'],
+      ].reduce((r,v,i,a) => // Converts colors to decimal values
+        (a[i] = parseInt('0x' + a[i][1].replace('#','')))&&a||a,null
+      ).reduce((r,v,i,a) => // Breaks the decimal value into r,g,b
+        (a[i] = {
+          r: Math.floor(v/(256*256)),
+          g: Math.floor((v%(256*256))/256),
+          b: v%(256*256)%(256)
+        })&&a||a,null
+      );
+      console.warn('Our colors: ', colors);
+
+      view.text.addEventListener('click', () => window.getSelection().selectAllChildren(view.text));
+      document.body.addEventListener('dragover', e => e.preventDefault());
+      document.body.addEventListener('drop', e => {
+        e.preventDefault();
+        view.render.clear();
+        view.text.clear();
+        data.render = null;
+        data.text = '';
+        var file = e.dataTransfer.files[0];
+        if (!file) { return; }
+        var url = URL.createObjectURL(file);
+        var img = document.createElement('img');
+        img.onload = () => {
+          view.loader.style.display = 'none';
+          data.render = document.createElement('canvas');
+          data.render.width = view.width.value;
+          data.render.height = view.height.value;
+          var context = data.render.getContext('2d');
+          context.drawImage(img, 0, 0, data.render.width, data.render.height);
+          URL.revokeObjectURL(url);
+          var pixels = context.getImageData(0,0,data.render.width, data.render.height);
+
+          for (var y = 0; y < pixels.height; y++) {
+            for (var x = 0; x < pixels.width; x++) {
+              var p = y*pixels.width*4+x*4;
+              var pixel = {
+                r: pixels.data[p+red],
+                g: pixels.data[p+green],
+                b: pixels.data[p+blue],
+                a: pixels.data[p+alpha]
+              }
+              var matches = colors
+                .map(color => [color.r-pixel.r, color.g-pixel.g, color.b-pixel.b])
+                .map(diff => diff.reduce((a,b) => Math.abs(a) + Math.abs(b)));
+              var index = matches.indexOf(Math.min(...matches));
+              var match = colors[index];
+              pixels.data[p+red] = match.r;
+              pixels.data[p+green] = match.g;
+              pixels.data[p+blue] = match.b;
+              pixels.data[p+alpha] = pixel.a < 255 ? 0 : 255;
+              data.text += pixel.a < 255 ? ' ' : index.toString(16);
+            }
+            data.text += '\n';
+          }
+          context.putImageData(pixels, 0, 0);
+
+          view.render.appendChild(data.render);
+          view.text.textContent = data.text;
+        };
+        img.src = url;
+        view.loader.style.display = '';
+      });
+
+      Element.prototype.clear = function() {
+        while (this.firstChild) { this.removeChild(this.firstChild); }
+      }
+    </script>
+  </body>
+</html>
