@@ -94,8 +94,7 @@
 
       </section>
       <form onsubmit="event.preventDefault()">
-        <label>Converted Width: <input name="width" type="number" value="64" /></label>
-        <label>Converted Height: <input name="height" type="number" value="64" /></label>
+        <label>Size: <input name="width" type="number" value="64" /></label>
       </form>
     </main>
     <loader style="display: none"></loader>
@@ -109,8 +108,7 @@
         render: document.getElementById('render'),
         text: document.getElementById('data'),
         form: document.querySelector('form'),
-        width: document.querySelector('[name=width]'),
-        height: document.querySelector('[name=height]'),
+        size: document.querySelector('[name=width]'),
         loader: document.querySelector('loader')
       }
 
@@ -158,17 +156,22 @@
         var img = document.createElement('img');
         img.onload = () => {
           view.loader.style.display = 'none';
+          var size = parseInt(view.size.value);
+          var ratio = Math.min(img.naturalWidth, img.naturalHeight)/Math.max(img.naturalWidth, img.naturalHeight);
+          var width = Math.round(img.naturalWidth>img.naturalHeight?size:size*ratio);
+          var height = Math.round(img.naturalHeight>img.naturalWidth?size:size*ratio);
           data.render = document.createElement('canvas');
-          data.render.width = view.width.value;
-          data.render.height = view.height.value;
+          data.render.width = width;
+          data.render.height = height;
           var context = data.render.getContext('2d');
-          context.drawImage(img, 0, 0, data.render.width, data.render.height);
+          context.imageSmoothingEnabled = false;
+          context.drawImage(img, 0, 0, width, height);
           URL.revokeObjectURL(url);
-          var pixels = context.getImageData(0,0,data.render.width, data.render.height);
+          var pixels = context.getImageData(0,0,width, height);
 
-          for (var y = 0; y < pixels.height; y++) {
-            for (var x = 0; x < pixels.width; x++) {
-              var p = y*pixels.width*4+x*4;
+          for (var y = 0; y < height; y++) {
+            for (var x = 0; x < width; x++) {
+              var p = y*width*4+x*4;
               var pixel = {
                 r: pixels.data[p+red],
                 g: pixels.data[p+green],
